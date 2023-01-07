@@ -1,0 +1,63 @@
+import sqlalchemy
+from sqlalchemy.orm import sessionmaker
+from sqlalchemy import Column, String, Integer, DATETIME, DATE, VARCHAR
+from sqlalchemy.ext.declarative import declarative_base
+
+
+engine = sqlalchemy.create_engine(
+    "mysql+pymysql://root:toor@localhost/online_movie_rating"
+)
+
+Base = declarative_base()
+Session = sessionmaker(bind=engine)
+session = Session()
+
+
+class Cars(Base):
+    __tablename__ = "cars"
+    id = Column(Integer, primary_key=True)
+    Producer = Column(String(100))
+    Year = Column(Integer)
+    Model = Column(String(100))
+    HorsePower = Column(Integer)
+    PricePerDay = Column(Integer)
+
+    def __repr__(self):
+        return (
+            f"<Car: id={self.car_id}, producer={self.producer}, model={self.model}, year={self.year}, "
+            f"horse_power={self.horse_power}, price_per_day={self.price_per_day}>"
+        )
+
+
+class Clients(Base):
+    __tablename__ = "clients"
+    id = Column(Integer, primary_key=True)
+    name = Column(String(100))
+    surname = Column(String(100))
+    address = Column(String(100))
+    city = Column(String(100))
+
+    def __repr__(self):
+        return (
+            f"<Client: id={self.client_id}, name={self.name}, surname={self.surname}, address={self.address},"
+            f"city={self.city}>"
+        )
+
+
+class Bookings(Base):
+    __tablename__ = "bookings"
+    booking_id = Column(Integer, primary_key=True)
+    client_id = Column(Integer)
+    car_id = Column(Integer)
+    start_date = Column(DATE)
+    end_date = Column(DATE)
+    total_amount = Column(Integer)
+
+    def __repr__(self):
+        return (
+            f"<Booking: id={self.booking_id}, client_id={self.client_id}, car_id={self.car_id}, "
+            f" start_date={self.start_date}, end_date={self.end_date},total_amount={self.total_amount}>"
+        )
+
+
+print(engine.table_names())
